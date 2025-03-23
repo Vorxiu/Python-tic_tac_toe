@@ -12,7 +12,6 @@ def empty_grid():
 
 def available_moves():
     available_moves = []
-    print("Available_moves:")
     for rows in range(3):
         for column in range(3):
             if GRID[rows][column] == " ":                
@@ -184,13 +183,35 @@ def playagain_prompt():
     choice = input("Press any key to play again:")
     if choice == "n" or choice == "N" or choice == "0":
         winner = False
+    else:
+        main()
+
+def main():
+    global winner
+    while winner:
+        #use while loop
+        insert_move(Player1,player1_input())
+        if mode == 1:
+            insert_move(Player2,player2_input())
+        elif mode == 2:
+            insert_move(Bot,bot_input_random())
+        else:
+            insert_move(Bot,bot_input_inter())
+
+        if Move_count >= 5:
+            print("Checking Win")
+            
+            if check_win_condition(False):
+                winner == False
+                break
 
 # Main program flow
 print("   =============")
 print("    TIC TAC TOE")
 print("   =============")
-
 display_grid()
+
+# mode1 is player2,m2 is random_bot,m3 is intermediate_bot
 print("\nSelect mode\n 1. Player vs Player\n 2. Player vs Bot")
 mode = int(input("Enter mode:"))
 
@@ -201,22 +222,5 @@ if mode == 2:
     if bot_mode == 1  or bot_mode == 2:
         mode = bot_mode + 1
 
-# mode1 is player2,m2 is random_bot,m3 is intermediate_bot
 display_grid()
-
-while winner:
-    #use while loop
-    insert_move(Player1,player1_input())
-    if mode == 1:
-        insert_move(Player2,player2_input())
-    elif mode == 2:
-        insert_move(Bot,bot_input_random())
-    else:
-        insert_move(Bot,bot_input_inter())
-
-    if Move_count >= 5:
-        print("Checking Win")
-        
-        if check_win_condition(False):
-            winner == False
-            break
+main()
