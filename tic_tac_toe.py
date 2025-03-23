@@ -213,11 +213,11 @@ display_grid()
 
 # mode1 is player2,m2 is random_bot,m3 is intermediate_bot
 print("\nSelect mode\n 1. Player vs Player\n 2. Player vs Bot")
-mode = int(input("Enter mode:"))
+mode = int(input("Enter mode: "))
 
 if mode == 2:
     print("Select Bot Type: \n 1) Easy \n 2) Intermediate")
-    bot_mode = int(input("Enter bot mode:"))
+    bot_mode = int(input("Enter bot mode: "))
     
     if bot_mode == 1  or bot_mode == 2:
         mode = bot_mode + 1
