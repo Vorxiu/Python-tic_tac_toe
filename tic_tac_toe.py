@@ -3,7 +3,7 @@ import random
 #legal moves,Need to work on bot and use a legal move system by using random choice
 Player1 = 'x'
 Player2 = 'o'
-Bot = "b"
+Bot = "o"
 Move_count:int = 0
 GRID = [[' ',' ',' '],[' ',' ',' '],[' ',' ',' ']]
 winner = True
