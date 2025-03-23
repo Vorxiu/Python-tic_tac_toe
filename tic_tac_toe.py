@@ -1,15 +1,14 @@
 import random
 
-#legal moves,Need to work on bot and use a legal move system by using random choice
 Player1 = 'x'
 Player2 = 'o'
 Bot = "o"
 Move_count:int = 0
 GRID = [[' ',' ',' '],[' ',' ',' '],[' ',' ',' ']]
 winner = True
+
 def empty_grid():
     return [[' ',' ',' '],[' ',' ',' ']]
-
 
 def available_moves():
     available_moves = []
@@ -163,7 +162,7 @@ def check_win_condition(is_bot):
     
     # check if its a draw
     if Move_count >= 9 and win == False and is_bot == False:
-        print("Its a draw")
+        print("Its a draw 🤝")
         print("Move count is:" + str(Move_count))
         playagain_prompt()
     
@@ -172,9 +171,9 @@ def check_win_condition(is_bot):
 def winner_check(a:int,b:int):
 
     if GRID[a][b] == Player1:
-        print("Player1 Won")
+        print("Player1 Won 🎉")
     else:
-        print("Player2 Won")
+        print("Player2 Won 🎉")
     playagain_prompt()
 
 def playagain_prompt():
