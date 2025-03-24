@@ -103,6 +103,76 @@ def bot_input_inter():
             return losing_move
     return random_move
 
+def bot_input_advanc():
+    
+    moves = available_moves()
+    random_move = random.choice(moves)
+    #checks winning move
+    for i in range(len(moves)):
+        r = moves[i][0]
+        c = moves[i][1]
+        GRID[r][c] = Bot
+        win = check_win_condition(True)
+        
+        if GRID[r][c] == Bot: 
+            GRID[r][c] = " "
+        if win == True:
+            print("Found winning move")
+            winning_move = r, c # winning move
+            return winning_move
+    
+    #checks losing move
+    for j in range(len(moves)):
+        r1 = moves[j][0]
+        c1 = moves[j][1]
+        GRID[r1][c1] = Player1
+        win1 = check_win_condition(True)
+        if GRID[r1][c1] == Player1: 
+            GRID[r1][c1] = " " 
+        if win1 == True:
+            print("Found blocking move") 
+            losing_move = r1,c1 # losing move
+            return losing_move
+    
+    #checks two moves ahead in the future
+    if Move_count > 2:
+        for a in range(len(moves)):
+            x1 = moves[a][0]
+            y1 = moves[a][1]
+            GRID[x1][y1] = Bot
+            future_moves = available_moves()
+            
+            for b in range(len(future_moves)):
+                x2 = future_moves[b][0]
+                y2 = future_moves[b][1]
+                GRID[x2][y2] = Bot
+                win1 = check_win_condition(True)
+                if GRID[x2][y2] == Bot:
+                    GRID[x2][y2] = " "
+                if win1 == True:
+                    break
+                #     w_move = x2,y2
+                #     return w_move
+            
+            if GRID[x1][y1] == Bot:
+                GRID[x1][y1] = " "
+            if win1 == True:
+                print("Found W move")
+                w_move = x1,y1
+                return w_move
+    
+    #If the center is empty returns its position
+    if GRID[1][1] == " ":
+        return 1,1
+    
+    #If there is an emoty corner return its psotion
+    coner_moves = [[0,0],[0,2],[2,0],[2,2]]
+    for rw,col in coner_moves:
+        if GRID[rw][col] == " ":
+            return rw,col
+    
+    return random_move
+    
 def insert_move(Player_type,x:int):
     global Move_count
     r,c = x
@@ -184,6 +254,7 @@ def playagain_prompt():
     if choice == "n" or choice == "N" or choice == "0":
         winner = False
     else:
+        display_grid()
         main()
 
 def main():
@@ -195,8 +266,10 @@ def main():
             insert_move(Player2,player2_input())
         elif mode == 2:
             insert_move(Bot,bot_input_random())
-        else:
+        elif mode == 3:
             insert_move(Bot,bot_input_inter())
+        else:
+            insert_move(Bot,bot_input_advanc())
 
         if Move_count >= 5:
             print("Checking Win")
@@ -211,15 +284,15 @@ print("    TIC TAC TOE")
 print("   =============")
 display_grid()
 
-# mode1 is player2,m2 is random_bot,m3 is intermediate_bot
+# mode1 is player2,m2 is random_bot,m3 is intermediate_bot,4 is advanced_bot
 print("\nSelect mode\n 1. Player vs Player\n 2. Player vs Bot")
-mode = int(input("Enter mode: "))
+mode = int(input("Enter mode:"))
 
 if mode == 2:
-    print("Select Bot Type: \n 1) Easy \n 2) Intermediate")
-    bot_mode = int(input("Enter bot mode: "))
+    print("Select Bot Type: \n 1) Easy \n 2) Intermediate \n 3) Casual bot")
+    bot_mode = int(input("Enter bot mode:"))
     
-    if bot_mode == 1  or bot_mode == 2:
+    if bot_mode == 1  or bot_mode == 2 or bot_mode == 3:
         mode = bot_mode + 1
 
 display_grid()
