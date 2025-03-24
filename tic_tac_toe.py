@@ -2,13 +2,10 @@ import random
 
 Player1 = 'x'
 Player2 = 'o'
-Bot = "o"
+Bot = "b"
 Move_count:int = 0
 GRID = [[' ',' ',' '],[' ',' ',' '],[' ',' ',' ']]
 winner = True
-
-def empty_grid():
-    return [[' ',' ',' '],[' ',' ',' ']]
 
 def available_moves():
     available_moves = []
@@ -48,7 +45,7 @@ def player2_input():
     c -= 1
     return r,c
 
-def bot_input_random():
+def bot_input_random(bot_move_value):
 
     moves = available_moves()
     print(f"Available moves after function:{moves}")
@@ -57,19 +54,19 @@ def bot_input_random():
     for i in range(len(moves)):
         r = moves[i][0]
         c = moves[i][1]
-        GRID[r][c] = Bot
+        GRID[r][c] = bot_move_value
         win = check_win_condition(True)
         
-        if GRID[r][c] == Bot: 
+        if GRID[r][c] == bot_move_value: 
             GRID[r][c] = " "
         if win == True:
-            print("Found winning move")
+            # print("Found winning move")
             move = r,c # winning move
             break
     
     return move
 
-def bot_input_inter():
+def bot_input_inter(Other_player_move_value,bot_move_value):
 
     moves = available_moves()
     # print(f"Available moves after function:{moves}")
@@ -79,13 +76,13 @@ def bot_input_inter():
     for i in range(len(moves)):
         r = moves[i][0]
         c = moves[i][1]
-        GRID[r][c] = Bot
+        GRID[r][c] = bot_move_value
         win = check_win_condition(True)
         
-        if GRID[r][c] == Bot: 
+        if GRID[r][c] == bot_move_value: 
             GRID[r][c] = " "
         if win == True:
-            print("Found winning move")
+            # print("Found winning move")
             winning_move = r, c # winning move
             return winning_move
     
@@ -93,31 +90,31 @@ def bot_input_inter():
     for j in range(len(moves)):
         r1 = moves[j][0]
         c1 = moves[j][1]
-        GRID[r1][c1] = Player1
+        GRID[r1][c1] = Other_player_move_value
         win1 = check_win_condition(True)
-        if GRID[r1][c1] == Player1: 
+        if GRID[r1][c1] == Other_player_move_value: 
             GRID[r1][c1] = " " 
         if win1 == True:
-            print("Found blocking move") 
+            # print("Found blocking move") 
             losing_move = r1,c1 # losing move
             return losing_move
     return random_move
 
-def bot_input_advanc():
-    
+def bot_input_advanc(Other_player_move_value,bot_move_value):
+    #The type of value used by bot or player eg. x or o
     moves = available_moves()
     random_move = random.choice(moves)
     #checks winning move
     for i in range(len(moves)):
         r = moves[i][0]
         c = moves[i][1]
-        GRID[r][c] = Bot
+        GRID[r][c] = bot_move_value
         win = check_win_condition(True)
         
-        if GRID[r][c] == Bot: 
+        if GRID[r][c] == bot_move_value: 
             GRID[r][c] = " "
         if win == True:
-            print("Found winning move")
+            # print("Found winning move")
             winning_move = r, c # winning move
             return winning_move
     
@@ -125,12 +122,12 @@ def bot_input_advanc():
     for j in range(len(moves)):
         r1 = moves[j][0]
         c1 = moves[j][1]
-        GRID[r1][c1] = Player1
+        GRID[r1][c1] = Other_player_move_value
         win1 = check_win_condition(True)
-        if GRID[r1][c1] == Player1: 
+        if GRID[r1][c1] == Other_player_move_value: 
             GRID[r1][c1] = " " 
         if win1 == True:
-            print("Found blocking move") 
+            # print("Found blocking move") 
             losing_move = r1,c1 # losing move
             return losing_move
     
@@ -139,37 +136,37 @@ def bot_input_advanc():
         for a in range(len(moves)):
             x1 = moves[a][0]
             y1 = moves[a][1]
-            GRID[x1][y1] = Bot
+            GRID[x1][y1] = bot_move_value
             future_moves = available_moves()
             
             for b in range(len(future_moves)):
                 x2 = future_moves[b][0]
                 y2 = future_moves[b][1]
-                GRID[x2][y2] = Bot
+                GRID[x2][y2] = bot_move_value
                 win1 = check_win_condition(True)
-                if GRID[x2][y2] == Bot:
+                if GRID[x2][y2] == bot_move_value:
                     GRID[x2][y2] = " "
                 if win1 == True:
                     break
-                #     w_move = x2,y2
-                #     return w_move
             
-            if GRID[x1][y1] == Bot:
+            if GRID[x1][y1] == bot_move_value:
                 GRID[x1][y1] = " "
             if win1 == True:
-                print("Found W move")
+                # print("Found W move")
                 w_move = x1,y1
-                return w_move
+                return w_move #The move that may lead to a win
     
     #If the center is empty returns its position
     if GRID[1][1] == " ":
         return 1,1
-    
-    #If there is an emoty corner return its psotion
-    coner_moves = [[0,0],[0,2],[2,0],[2,2]]
-    for rw,col in coner_moves:
-        if GRID[rw][col] == " ":
-            return rw,col
+    if Move_count > 1:
+        #If there is an emoty corner return its psotion
+        coner_moves = [[0,0],[0,2],[2,0],[2,2]]
+        if coner_moves in moves:
+            return random.choice(coner_moves)
+    # for rw,col in coner_moves:
+    #     if GRID[rw][col] == " ":
+    #         return rw,col
     
     return random_move
     
@@ -192,7 +189,6 @@ def insert_move(Player_type,x:int):
     elif GRID[r][c] == " ":
         GRID[r][c] = Player_type #r = list number,c = position in the list
         Move_count += 1
-        display_grid()
         return True
     else:
         print(f"Unable to insert move Player:{Player_type},at :{r},{c}\n")
@@ -225,15 +221,9 @@ def check_win_condition(is_bot):
             a,b = 0,i
             win = True
             break
-    
+    #if there is a winner then prints the relevant message
     if is_bot == False and win == True:
         winner_check(a,b)
-    
-    # check if its a draw
-    if Move_count >= 9 and win == False and is_bot == False:
-        print("Its a draw 🤝")
-        print("Move count is:" + str(Move_count))
-        playagain_prompt()
     
     return win
 
@@ -247,7 +237,7 @@ def winner_check(a:int,b:int):
 
 def playagain_prompt():
     global GRID,Move_count,winner
-    GRID = empty_grid()
+    GRID = [[' ',' ',' '],[' ',' ',' '],[' ',' ',' ']]
     Move_count = 0
     
     choice = input("Press any key to play again:")
@@ -260,23 +250,36 @@ def playagain_prompt():
 def main():
     global winner
     while winner:
-        #use while loop
-        insert_move(Player1,player1_input())
-        if mode == 1:
-            insert_move(Player2,player2_input())
-        elif mode == 2:
-            insert_move(Bot,bot_input_random())
-        elif mode == 3:
-            insert_move(Bot,bot_input_inter())
+        
+        #Player 1 input
+        if k != True:
+            insert_move(Player1,player1_input())
         else:
-            insert_move(Bot,bot_input_advanc())
-
-        if Move_count >= 5:
-            print("Checking Win")
-            
+            insert_move(Player1,bot_input_inter(Bot,Player1)) #Bot input x
+        display_grid()
+        if Move_count <= 8: 
+            #Player 2 input
+            if mode == 1:
+                insert_move(Player2,player2_input())
+            elif mode == 2:
+                insert_move(Bot,bot_input_random(Bot))
+            elif mode == 3:
+                insert_move(Bot,bot_input_inter(Player1,Bot))
+            else:
+                insert_move(Bot,bot_input_advanc(Player1,Bot))
+            display_grid()
+        
+        #Checks the win condition
+        if Move_count >= 5 and Move_count <= 9:
+            # print("Checking Win")
             if check_win_condition(False):
-                winner == False
-                break
+                if winner == False:
+                    break
+        # check if its a draw
+        if Move_count >= 9:
+            print("Its a draw 🤝")
+            playagain_prompt()
+        
 
 # Main program flow
 print("   =============")
@@ -284,13 +287,18 @@ print("    TIC TAC TOE")
 print("   =============")
 display_grid()
 
-# mode1 is player2,m2 is random_bot,m3 is intermediate_bot,4 is advanced_bot
-print("\nSelect mode\n 1. Player vs Player\n 2. Player vs Bot")
-mode = int(input("Enter mode:"))
+# mode1 is player2,m2 is random_bot,m3 is intermediate_bot,4 is advanced_bot,
+print("\nSelect mode\n 1. Player vs Player\n 2. Player vs Bot\n 3. Bot vs Player")
+mode = int(input("Enter mode: "))
+if mode == 3:
+    mode = 1
+    k = True
+else:
+    k = False
 
 if mode == 2:
     print("Select Bot Type: \n 1) Easy \n 2) Intermediate \n 3) Casual bot")
-    bot_mode = int(input("Enter bot mode:"))
+    bot_mode = int(input("Enter bot mode: "))
     
     if bot_mode == 1  or bot_mode == 2 or bot_mode == 3:
         mode = bot_mode + 1
