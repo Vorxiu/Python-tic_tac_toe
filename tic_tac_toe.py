@@ -17,7 +17,8 @@ def available_moves():
 
 def display_grid():
 
-    print("\n     1   2   3")
+    # print("\n     1   2   3")
+    print("\n     a   b   c")    
     print("    ___________  ")
     print(f" 1 | {GRID[0][0]} | {GRID[0][1]} | {GRID[0][2]} |")
     print("   |–––|–––|–––|")
@@ -33,16 +34,28 @@ def player1_input():
     print("Player1 Turn")
     r = int(input('Select row(1-3): '))
     r -= 1
-    c = int(input('Select column(1-3): '))
-    c -= 1
+    c = int(input('Select column(a-c): '))
+    # c -= 1
+    if c == "a":
+        c = 0
+    elif c == "b":
+        c = 1
+    elif c == "c":
+        c = 2
     return r,c
 
 def player2_input():
     print("Player2 Turn")
     r = int(input('Select row(1-3): '))
     r -= 1
-    c = int(input('Select column(1-3): '))
-    c -= 1
+    c = int(input('Select column(a-c): '))
+    # c -= 1
+    if c == "a":
+        c = 0
+    elif c == "b":
+        c = 1
+    elif c == "c":
+        c = 2
     return r,c
 
 def bot_input_random(bot_move_value):
@@ -257,10 +270,19 @@ def main():
         else:
             insert_move(Player1,bot_input_inter(Bot,Player1)) #Bot input x
         display_grid()
+        
+        #Checks the win condition
+        if Move_count >= 5 and Move_count <= 9:
+            # print("Checking Win")
+            if check_win_condition(False):
+                if winner == False:
+                    break
+                        
         if Move_count <= 8: 
             #Player 2 input
             if mode == 1:
                 insert_move(Player2,player2_input())
+                # insert_move(Bot,bot_input_advanc(Player1,Bot))
             elif mode == 2:
                 insert_move(Bot,bot_input_random(Bot))
             elif mode == 3:
