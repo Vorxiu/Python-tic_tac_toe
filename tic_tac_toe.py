@@ -258,34 +258,36 @@ def check_win_condition(is_bot):
     return win
 
 def winner_check(a:int,b:int):
-
+    global b_w1,b_w2
     if GRID[a][b] == Player1:
         print("Player1 Won 🎉")
+
     else:
         print("Player2 Won 🎉")
+
     playagain_prompt()
 
 def playagain_prompt():
     global GRID,Move_count,winner
     GRID = [[' ',' ',' '],[' ',' ',' '],[' ',' ',' ']]
     Move_count = 0
-    
-    choice = input("Press any key to play again:")
-    if choice == "n" or choice == "N" or choice == "0":
-        winner = False
-    else:
+    if bot_mode == 0:
         display_grid()
         main()
+    else:
+        choice = input("Press any key to play again:")
+        if choice == "n" or choice == "N" or choice == "0":
+            winner = False
+        else:
+            display_grid()
+            main()
 
 def main():
     global winner
     while winner:
-        
         #Player 1 input
-        if k != True:
-            insert_move(Player1,player1_input())
-        else:
-            insert_move(Player1,bot_input_inter(Bot,Player1)) #Bot input x
+        insert_move(Player1,player1_input())
+        # insert_move(Player1,bot_input_inter(Bot,Player1)) #Bot input x
         display_grid()
         
         #Checks the win condition
@@ -294,12 +296,12 @@ def main():
             if check_win_condition(False):
                 if winner == False:
                     break
-                        
+
         if Move_count <= 8: 
             #Player 2 input
             if mode == 1:
-                insert_move(Player2,player2_input())
-                # insert_move(Bot,bot_input_advanc(Player1,Bot))
+                # insert_move(Player2,player2_input())
+                insert_move(Bot,bot_input_inter(Player1,Bot))
             elif mode == 2:
                 insert_move(Bot,bot_input_random(Bot))
             elif mode == 3:
@@ -318,7 +320,9 @@ def main():
         if Move_count >= 9:
             print("Its a draw 🤝")
             playagain_prompt()
-        
+    if bot_mode == 0:
+        print(f"Bot:\n Player1: {b_w1} Player2: {b_w2}")
+    print("Exiting Game")
 
 # Main program flow
 print("   =============")
@@ -331,9 +335,6 @@ print("\nSelect mode\n 1. Player vs Player\n 2. Player vs Bot\n 3. Bot vs Player
 mode = int(input("Enter mode: "))
 if mode == 3:
     mode = 1
-    k = True
-else:
-    k = False
 
 if mode == 2:
     print("Select Bot Type: \n 1) Easy \n 2) Intermediate \n 3) Casual bot")
