@@ -43,6 +43,7 @@ def player1_input():
     elif c == "c":
         c = 2
     else:
+        int(c)
         c -= 1
     int(c)
     return r,c
@@ -60,6 +61,7 @@ def player2_input():
     elif c == "c":
         c = 2
     else:
+        int(c)
         c -= 1
     int(c)
     return r,c
@@ -117,6 +119,15 @@ def bot_input_inter(Other_player_move_value,bot_move_value):
             # print("Found blocking move") 
             losing_move = r1,c1 # losing move
             return losing_move
+            #If the center is empty returns its position
+    #priritizes the center abd corner moves
+    if GRID[1][1] == " ":
+        return 1,1
+    if Move_count > 1:
+        #If there is an emoty corner return its psotion
+        coner_moves = [[0,0],[0,2],[2,0],[2,2]]
+        if coner_moves in moves:
+            return random.choice(coner_moves)
     return random_move
 
 def bot_input_advanc(Other_player_move_value,bot_move_value):
