@@ -34,7 +34,7 @@ def player1_input():
     print("Player1 Turn")
     r = int(input('Select row(1-3): '))
     r -= 1
-    c = int(input('Select column(a-c): '))
+    c = input('Select column(a-c): ')
     # c -= 1
     if c == "a":
         c = 0
@@ -42,6 +42,9 @@ def player1_input():
         c = 1
     elif c == "c":
         c = 2
+    else:
+        c -= 1
+    int(c)
     return r,c
 
 def player2_input():
@@ -56,6 +59,9 @@ def player2_input():
         c = 1
     elif c == "c":
         c = 2
+    else:
+        c -= 1
+    int(c)
     return r,c
 
 def bot_input_random(bot_move_value):
